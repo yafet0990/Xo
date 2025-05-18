@@ -1,4 +1,3 @@
-XO game zone:
 <!doctype html>
 <html>
 <head>
@@ -155,16 +154,26 @@ XO game zone:
       color: rgba(255, 255, 255, 0.6);
       font-size: 0.9rem;
     }
+    
+    .user-id-display {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.5);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 <body>
   <div class="balance-display">
     <span class="balance-icon">🤖</span>
-    <span class="balance-amount">Balance: 0 BIRR</span>
+    <span class="balance-amount" id="balanceDisplay">Balance: 0 BIRR</span>
   </div>
 
-<div class="container">
-    <img src="file:///storage/emulated/0/Download/43932e91-fdab-4abb-a22c-a925f306e8c6.png" height="190" class="logo" alt="Xo game zone Logo">
+  <div class="container">
+    <img src="logo.png" height="190" class="logo" alt="Xo game zone Logo">
     <h1>Xo game zone</h1>
     
     <div class="button-container">
@@ -175,5 +184,38 @@ XO game zone:
       © 2023 Xo game zone | Game On! 🕹️
     </footer>
   </div>
+
+  <div class="user-id-display" id="userIdDisplay">
+    User ID: loading...
+  </div>
+
+  <script>
+    // Generate or get user ID
+    let userId = localStorage.getItem('userId');
+    if (!userId) {
+      userId = 'user_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('userId', userId);
+    }
+    
+    // Initialize balance system
+    if (!localStorage.getItem('userBalances')) {
+      localStorage.setItem('userBalances', JSON.stringify({}));
+    }
+    
+    const userBalances = JSON.parse(localStorage.getItem('userBalances'));
+    if (typeof userBalances[userId] === 'undefined') {
+      userBalances[userId] = 0; // Start with 0 balance
+      localStorage.setItem('userBalances', JSON.stringify(userBalances));
+    }
+    
+    // Update displays
+    document.getElementById('balanceDisplay').textContent = `Balance: ${userBalances[userId]} BIRR`;
+    document.getElementById('userIdDisplay').textContent = `User ID: ${userId}`;
+    
+    // Show deposit overlay if balance is 0
+    if (userBalances[userId] <= 0) {
+      alert("Your balance is 0 BIRR. Please contact admin to add funds.");
+    }
+  </script>
 </body>
-</html>
+  </html>
