@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Xo Game Zone - Games</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+    
     body {
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
       color: #fff;
@@ -13,6 +15,20 @@
       margin: 0 auto;
       padding: 40px 20px;
       line-height: 1.6;
+    }
+    
+    .balance-display {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      padding: 12px 25px;
+      border-radius: 30px;
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
     }
     
     h1 {
@@ -107,9 +123,24 @@
       font-weight: 700;
       margin-right: 10px;
     }
+    
+    .user-id-display {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.5);
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 <body>
+  <div class="balance-display">
+    <span class="balance-icon">🤖</span>
+    <span class="balance-amount" id="balanceDisplay">Balance: 0 BIRR</span>
+  </div>
+
   <div class="brand">XO GAME ZONE</div>
   <h1>Game Library</h1>
   
@@ -131,5 +162,34 @@
       </div>
     </li>
   </ul>
+
+  <div class="user-id-display" id="userIdDisplay">
+    User ID: loading...
+  </div>
+
+  <script>
+    // Get user ID
+    const userId = localStorage.getItem('userId') || 'user_unknown';
+    
+    // Initialize balance display
+    if (!localStorage.getItem('userBalances')) {
+      localStorage.setItem('userBalances', JSON.stringify({}));
+    }
+    
+    const userBalances = JSON.parse(localStorage.getItem('userBalances'));
+    if (typeof userBalances[userId] === 'undefined') {
+      userBalances[userId] = 0;
+      localStorage.setItem('userBalances', JSON.stringify(userBalances));
+    }
+    
+    // Update displays
+    document.getElementById('balanceDisplay').textContent = `Balance: ${userBalances[userId]} BIRR`;
+    document.getElementById('userIdDisplay').textContent = `User ID: ${userId}`;
+    
+    // Show alert if balance is 0
+    if (userBalances[userId] <= 0) {
+      alert("Your balance is 0 BIRR. Please contact admin to add funds.");
+    }
+  </script>
 </body>
-</html>
+      </html>
