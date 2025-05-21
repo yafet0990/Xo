@@ -3,383 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XO Challenge - Game Zone</title>
+  <title>XO Battle Arena</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
     body {
-      background: linear-gradient(135deg, #2a0a4a, #4a148c);
-      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: white;
+      min-height: 100vh;
+      margin: 0;
     }
 
-    .balance-display {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-      padding: 12px 25px;
-      border-radius: 30px;
-      box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 1000;
-    }
-
-    .game-container {
-      position: relative;
-      padding: 20px;
+    .arena-container {
       background: rgba(0, 0, 0, 0.3);
+      padding: 2rem;
       border-radius: 20px;
+      border: 3px solid #ff3d9e;
       box-shadow: 0 0 40px rgba(255, 61, 158, 0.3);
-      border: 2px solid #ff3d9e;
     }
 
-    .grid {
+    .battle-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 1rem;
       background: rgba(255, 255, 255, 0.05);
-      padding: 15px;
+      padding: 1.5rem;
       border-radius: 15px;
     }
 
-    .cell {
-      width: 90px;
-      height: 90px;
+    .combat-cell {
+      width: 100px;
+      height: 100px;
       background: rgba(255, 255, 255, 0.1);
-      border: 2px solid #ff3d9e;
-      border-radius: 12px;
+      border: 2px solid #00f7ff;
+      border-radius: 15px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 3.5rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      color: transparent;
-      text-shadow: 0 0 20px rgba(255, 61, 158, 0.8);
+      text-shadow: 0 0 20px currentColor;
     }
 
-    .cell:hover {
-      background: rgba(255, 61, 158, 0.1);
+    .combat-cell:hover {
+      background: rgba(0, 247, 255, 0.1);
       transform: scale(1.05);
     }
 
-    .cell.x {
+    .combat-cell.x {
       color: #ff3d9e;
       animation: x-plode 0.5s ease;
     }
 
-    .cell.o {
+    .combat-cell.o {
       color: #00f7ff;
       animation: o-plode 0.5s ease;
     }
 
     @keyframes x-plode {
-      0% { transform: scale(0); }
-      90% { transform: scale(1.1); }
+      0% { transform: scale(0); opacity: 0; }
+      90% { transform: scale(1.1); opacity: 1; }
       100% { transform: scale(1); }
     }
 
     @keyframes o-plode {
-      0% { transform: scale(0); }
-      90% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+      0% { transform: rotate(0deg) scale(0); opacity: 0; }
+      90% { transform: rotate(360deg) scale(1.1); opacity: 1; }
+      100% { transform: rotate(360deg) scale(1); }
     }
 
-    .status {
+    .war-status {
       text-align: center;
-      margin: 20px 0;
+      margin: 2rem 0;
       font-size: 1.5rem;
-      color: #00f7ff;
-      text-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
-    }
-
-    .stake-display {
-      margin-bottom: 20px;
-      font-size: 1.2rem;
       color: #ff69b4;
-      text-align: center;
+      text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
     }
 
-    .result-modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: linear-gradient(45deg, #4a148c, #2a0a4a);
-      padding: 30px 50px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 0 40px rgba(255, 61, 158, 0.4);
-      display: none;
-      border: 2px solid #ff3d9e;
-      z-index: 3000;
+    .player-tag {
+      padding: 0.5rem 1.5rem;
+      border-radius: 25px;
+      margin: 0 1rem;
+      font-weight: 600;
     }
 
-    .modal-buttons {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .modal-button {
-      padding: 10px 30px;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: bold;
-    }
-
-    .back-button {
+    .player-x-tag {
       background: #ff3d9e;
-      color: white;
+      box-shadow: 0 0 20px rgba(255, 61, 158, 0.4);
     }
 
-    .continue-button {
+    .player-o-tag {
       background: #00f7ff;
-      color: #2a0a4a;
-    }
-    
-    .user-id-display {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(0,0,0,0.5);
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+      color: #1a1a2e;
+      box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
     }
   </style>
 </head>
 <body>
-  <div class="balance-display">
-    <span class="balance-icon">🤖</span>
-    <span class="balance-amount" id="balanceDisplay">Balance: 0 BIRR</span>
-  </div>
-
-  <div class="game-container">
-    <div class="stake-display" id="stakeDisplay">Stake: 0 BIRR</div>
-    <div class="status" id="status">Your Turn!</div>
-    <div class="grid" id="grid">
-      <div class="cell" data-index="0"></div>
-      <div class="cell" data-index="1"></div>
-      <div class="cell" data-index="2"></div>
-      <div class="cell" data-index="3"></div>
-      <div class="cell" data-index="4"></div>
-      <div class="cell" data-index="5"></div>
-      <div class="cell" data-index="6"></div>
-      <div class="cell" data-index="7"></div>
-      <div class="cell" data-index="8"></div>
+  <div class="arena-container">
+    <div class="war-status" id="status">
+      <span class="player-tag player-x-tag" id="playerXDisplay"></span>
+      <span style="margin: 0 1rem;">VS</span>
+      <span class="player-tag player-o-tag" id="playerODisplay"></span>
     </div>
-  </div>
-
-  <div class="result-modal" id="resultModal">
-    <div id="resultText"></div>
-    <div class="modal-buttons">
-      <button class="modal-button back-button" onclick="goBack()">Back</button>
-      <button class="modal-button continue-button" onclick="resetGame()">Continue</button>
+    <div class="battle-grid" id="grid">
+      <div class="combat-cell" data-index="0"></div>
+      <div class="combat-cell" data-index="1"></div>
+      <div class="combat-cell" data-index="2"></div>
+      <div class="combat-cell" data-index="3"></div>
+      <div class="combat-cell" data-index="4"></div>
+      <div class="combat-cell" data-index="5"></div>
+      <div class="combat-cell" data-index="6"></div>
+      <div class="combat-cell" data-index="7"></div>
+      <div class="combat-cell" data-index="8"></div>
     </div>
-  </div>
-
-  <div class="user-id-display" id="userIdDisplay">
-    User ID: loading...
   </div>
 
   <script>
-    // Game variables
+    // Game Initialization
+    const userId = localStorage.getItem('userId');
+    const urlParams = new URLSearchParams(window.location.search);
+    const stake = parseInt(urlParams.get('stake'));
+    const p1 = urlParams.get('p1');
+    const p2 = urlParams.get('p2');
+    
     let currentPlayer = 'X';
-    let gameActive = true;
-    let gameState = ['', '', '', '', '', '', '', '', ''];
-    let stakeAmount = 0;
-    let userId = 'user_unknown';
-    const winCombos = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8],
-      [0, 3, 6], [1, 4, 7], [2, 5, 8],
-      [0, 4, 8], [2, 4, 6]
-    ];
+    let gameState = ['','','','','','','','',''];
+    const winCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 
-    // Initialize game
-    document.addEventListener('DOMContentLoaded', () => {
-      // Get parameters from URL
-      const urlParams = new URLSearchParams(window.location.search);
-      stakeAmount = parseInt(urlParams.get('stake')) || 0;
-      
-      // Get user ID
-      userId = localStorage.getItem('userId') || 'user_unknown';
-      
-      // Initialize balance system
-      if (!localStorage.getItem('userBalances')) {
-        localStorage.setItem('userBalances', JSON.stringify({}));
-      }
-      
-      const userBalances = JSON.parse(localStorage.getItem('userBalances'));
-      if (typeof userBalances[userId] === 'undefined') {
-        userBalances[userId] = 0;
-        localStorage.setItem('userBalances', JSON.stringify(userBalances));
-      }
-      
-      // Update displays
-      document.getElementById('stakeDisplay').textContent = `Stake: ${stakeAmount} BIRR`;
-      updateBalanceDisplay();
-      document.getElementById('userIdDisplay').textContent = `User ID: ${userId}`;
-      
-      // Setup cell click handlers
-      document.querySelectorAll('.cell').forEach(cell => {
-        cell.addEventListener('click', handleCellClick);
-      });
+    // Initialize player displays
+    document.getElementById('playerXDisplay').textContent = `${p1} (X)`;
+    document.getElementById('playerODisplay').textContent = `${p2} (O)`;
+
+    // Game Logic
+    document.querySelectorAll('.combat-cell').forEach(cell => {
+      cell.addEventListener('click', handleCombatMove);
     });
 
-    function updateBalanceDisplay() {
-      const userBalances = JSON.parse(localStorage.getItem('userBalances'));
-      document.getElementById('balanceDisplay').textContent = 
-        `Balance: ${userBalances[userId]} BIRR`;
-    }
+    function handleCombatMove(e) {
+      const index = e.target.dataset.index;
+      const isXPlayer = userId === p1;
+      
+      // Validate move
+      if(gameState[index] !== '' || 
+         (currentPlayer === 'X' && !isXPlayer) || 
+         (currentPlayer === 'O' && isXPlayer)) return;
 
-    function handleCellClick(e) {
-      const clickedCell = e.target;
-      const clickedCellIndex = parseInt(clickedCell.dataset.index);
+      gameState[index] = currentPlayer;
+      e.target.textContent = currentPlayer;
+      e.target.classList.add(currentPlayer.toLowerCase());
       
-      if (gameState[clickedCellIndex] !== '' || !gameActive || currentPlayer !== 'X') {
-        return;
-      }
-      
-      // Player move
-      makeMove(clickedCell, clickedCellIndex, 'X');
-      
-      // Check if game continues
-      if (gameActive) {
-        currentPlayer = 'O';
-        document.getElementById('status').textContent = "AI Thinking...";
-        
-        // AI move after delay
-        setTimeout(() => {
-          const aiMoveIndex = aiMove();
-          const aiCell = document.querySelector(`.cell[data-index="${aiMoveIndex}"]`);
-          makeMove(aiCell, aiMoveIndex, 'O');
-          currentPlayer = 'X';
-          document.getElementById('status').textContent = "Your Turn!";
-        }, 1000);
-      }
-    }
-
-    function makeMove(cell, index, player) {
-      gameState[index] = player;
-      cell.textContent = player;
-      cell.classList.add(player.toLowerCase());
-      
-      if (checkWin(player)) {
-        handleGameEnd(player);
-      } else if (checkDraw()) {
-        handleGameEnd(null);
-      }
-    }
-
-    function aiMove() {
-      // Simple AI with occasional random moves
-      if (Math.random() < 0.3) {
-        const available = gameState.reduce((a, c, i) => c === '' ? a.concat(i) : a, []);
-        return available[Math.floor(Math.random() * available.length)];
-      }
-      
-      // Try to win
-      for (let i = 0; i < winCombos.length; i++) {
-        const [a, b, c] = winCombos[i];
-        if (gameState[a] === 'O' && gameState[b] === 'O' && gameState[c] === '') return c;
-        if (gameState[a] === 'O' && gameState[c] === 'O' && gameState[b] === '') return b;
-        if (gameState[b] === 'O' && gameState[c] === 'O' && gameState[a] === '') return a;
-      }
-      
-      // Block player
-      for (let i = 0; i < winCombos.length; i++) {
-        const [a, b, c] = winCombos[i];
-        if (gameState[a] === 'X' && gameState[b] === 'X' && gameState[c] === '') return c;
-        if (gameState[a] === 'X' && gameState[c] === 'X' && gameState[b] === '') return b;
-        if (gameState[b] === 'X' && gameState[c] === 'X' && gameState[a] === '') return a;
-      }
-      
-      // Center if available
-      if (gameState[4] === '') return 4;
-      
-      // Random corner
-      const corners = [0, 2, 6, 8].filter(i => gameState[i] === '');
-      if (corners.length > 0) return corners[Math.floor(Math.random() * corners.length)];
-      
-      // Any available move
-      const available = gameState.reduce((a, c, i) => c === '' ? a.concat(i) : a, []);
-      return available[Math.floor(Math.random() * available.length)];
-    }
-
-    function checkWin(player) {
-      return winCombos.some(combo => {
-        return combo.every(index => gameState[index] === player);
-      });
-    }
-
-    function checkDraw() {
-      return gameState.every(cell => cell !== '');
-    }
-
-    function handleGameEnd(winner) {
-      gameActive = false;
-      const resultModal = document.getElementById('resultModal');
-      const resultText = document.getElementById('resultText');
-      const userBalances = JSON.parse(localStorage.getItem('userBalances'));
-      
-      if (checkWin('X')) {
-        // Player wins - double the stake
-        const winnings = stakeAmount * 2;
-        userBalances[userId] += winnings;
-        localStorage.setItem('userBalances', JSON.stringify(userBalances));
-        resultText.innerHTML = `<h2>You Win! 🎉</h2><p>+${winnings} BIRR</p>`;
-      } else if (checkWin('O')) {
-        // AI wins - nothing changes
-        resultText.innerHTML = `<h2>You Lost 😢</h2><p>Better luck next time!</p>`;
+      if(checkVictory()) {
+        endCombat(currentPlayer);
+      } else if(gameState.every(cell => cell !== '')) {
+        endCombat(null);
       } else {
-        // Draw - return stake
-        userBalances[userId] += stakeAmount;
-        localStorage.setItem('userBalances', JSON.stringify(userBalances));
-        resultText.innerHTML = `<h2>Draw! 🤝</h2><p>Stake returned</p>`;
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      }
+    }
+
+    function checkVictory() {
+      return winCombos.some(combo => {
+        return combo.every(i => gameState[i] === currentPlayer);
+      });
+    }
+
+    function endCombat(winner) {
+      const balances = JSON.parse(localStorage.getItem('userBalances'));
+      
+      if(winner) {
+        const winnerId = winner === 'X' ? p1 : p2;
+        const loserId = winner === 'X' ? p2 : p1;
+        
+        // 1.8x payout to winner
+        balances[winnerId] += Math.round(stake * 1.8);
+        balances[loserId] -= stake;
+        
+        alert(`${winnerId} አሸነፈ! (+${stake*1.8} BIRR)\n${loserId} ተሸነፈ! (-${stake} BIRR)`);
+      } else {
+        balances[p1] += stake;
+        balances[p2] += stake;
+        alert('እኩል ውጤት! ብር ተመላልሷል!');
       }
       
-      updateBalanceDisplay();
-      resultModal.style.display = 'block';
-    }
-
-    function resetGame() {
-      // Reset game state
-      currentPlayer = 'X';
-      gameActive = true;
-      gameState = ['', '', '', '', '', '', '', '', ''];
-      
-      // Clear cells
-      document.querySelectorAll('.cell').forEach(cell => {
-        cell.textContent = '';
-        cell.classList.remove('x', 'o');
-      });
-      
-      // Hide modal
-      document.getElementById('resultModal').style.display = 'none';
-      document.getElementById('status').textContent = "Your Turn!";
-    }
-
-    function goBack() {
+      localStorage.setItem('userBalances', JSON.stringify(balances));
       window.location.href = 'three.html';
     }
   </script>
 </body>
-        </html>
+      </html>
