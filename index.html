@@ -102,6 +102,34 @@
   </style>
 </head>
 <body>
+  <!-- File Location: https://github.com/yafet0990/Xo/blob/main/index.html -->
+
+<!-- Add this BALANCE DISPLAY anywhere in your body -->
+<div id="balanceDisplay" style="position: fixed; top: 20px; right: 20px; padding: 10px; background: white; border: 2px solid black;">
+    Balance: $<span id="userBalance">0.00</span>
+</div>
+
+<!-- Add this JavaScript BEFORE closing </body> -->
+<script>
+// User ID System
+let userId = localStorage.getItem('xoUserId');
+if (!userId) {
+    userId = 'user_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('xoUserId', userId);
+}
+
+// Balance Update Function
+function updateBalance() {
+    const balance = localStorage.getItem(`user_${userId}_balance`) || 0;
+    document.getElementById('userBalance').textContent = parseFloat(balance).toFixed(2);
+}
+
+// Initial update
+updateBalance();
+
+// Update balance every 2 seconds
+setInterval(updateBalance, 2000);
+</script>
   <!-- Add this at the end of the <body> -->
 <script>
 // Telegram Balance Sync System
