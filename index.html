@@ -1,160 +1,94 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <title>Xo game zone</title>
+  <title>XO Game Zone</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
     
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      background: linear-gradient(135deg, #0a0a1a, #1a1a2e);
       color: #fff;
       margin: 0;
       padding: 0;
       min-height: 100vh;
-      background-image: 
-        radial-gradient(circle at 10% 20%, rgba(255, 50, 150, 0.2) 0%, transparent 30%),
-        radial-gradient(circle at 90% 80%, rgba(0, 200, 255, 0.2) 0%, transparent 30%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      overflow-x: hidden;
+      overflow: hidden;
     }
-    
+
+    .nebula-effect {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(255, 61, 158, 0.1) 0%, transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(0, 247, 255, 0.1) 0%, transparent 30%);
+      animation: nebulaFlow 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes nebulaFlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .balance-display {
       position: fixed;
       top: 20px;
       left: 20px;
-      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+      background: linear-gradient(45deg, #ff3d9e, #00f7ff);
       padding: 12px 25px;
       border-radius: 30px;
-      box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
+      box-shadow: 0 0 25px rgba(0, 247, 255, 0.3);
       display: flex;
       align-items: center;
       gap: 10px;
       z-index: 1000;
     }
-    
-    .balance-icon {
-      font-size: 1.2rem;
-    }
-    
-    .balance-amount {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    
-    body::before {
-      content: "🎮🕹️👾";
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: -1;
-      opacity: 0.08;
-      font-size: 50px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
+
+    .main-container {
       text-align: center;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 20px;
+      border: 2px solid #00f7ff;
+      box-shadow: 0 0 40px rgba(0, 247, 255, 0.2);
     }
-    
-    .logo {
-      margin: 30px 0;
-      filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.6));
-      transition: transform 0.3s ease;
-    }
-    
-    .logo:hover {
-      transform: scale(1.05) rotate(-5deg);
-    }
-    
-    h1 {
-      color: #ff69b4;
-      text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+
+    .game-title {
       font-size: 3.5rem;
-      margin-bottom: 50px;
-      position: relative;
-      display: inline-block;
-      letter-spacing: 2px;
+      background: linear-gradient(45deg, #ff3d9e, #00f7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(0, 247, 255, 0.4);
+      margin-bottom: 2rem;
     }
-    
-    h1::after {
-      content: "⚡";
-      position: absolute;
-      right: -50px;
-      top: -10px;
-      font-size: 2.5rem;
-      animation: spark 1s infinite;
-    }
-    
-    @keyframes spark {
-      0% { opacity: 0; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0; transform: scale(0.8); }
-    }
-    
-    .button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      margin-top: 50px;
-    }
-    
-    .game-button {
-      display: inline-block;
-      padding: 20px 50px;
-      background: linear-gradient(45deg, #ff6b6b, #ff416c);
+
+    .launch-button {
+      background: linear-gradient(45deg, #ff3d9e, #00f7ff);
       color: white;
-      text-decoration: none;
+      padding: 1.5rem 4rem;
       border-radius: 50px;
-      font-size: 1.8rem;
+      text-decoration: none;
+      font-size: 1.5rem;
       font-weight: 700;
-      box-shadow: 0 5px 25px rgba(255, 107, 107, 0.5);
       transition: all 0.3s ease;
+      box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
       border: none;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      min-width: 350px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
     }
-    
-    .game-button::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: 0.5s;
+
+    .launch-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(0, 247, 255, 0.5);
     }
-    
-    .game-button:hover {
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 10px 35px rgba(255, 107, 107, 0.8);
-    }
-    
-    .game-button:hover::before {
-      left: 100%;
-    }
-    
-    footer {
-      margin-top: 100px;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 0.9rem;
-    }
-    
+
     .user-id-display {
       position: fixed;
       bottom: 20px;
@@ -163,59 +97,43 @@
       padding: 8px 15px;
       border-radius: 20px;
       font-size: 0.8rem;
+      border: 1px solid #00f7ff;
     }
   </style>
 </head>
 <body>
+  <div class="nebula-effect"></div>
+  
   <div class="balance-display">
-    <span class="balance-icon">🤖</span>
-    <span class="balance-amount">Balance: <span id="balanceValue">0</span> BIRR</span>
+    <span>💰 Balance: <span id="balanceValue">0</span> BIRR</span>
   </div>
 
-  <div class="container">
-    <img src="logo.png" height="190" class="logo" alt="Xo game zone Logo">
-    <h1>Xo game zone</h1>
-    
-    <div class="button-container">
-      <a href="second.html" class="game-button">🚀 Start Game</a>
-    </div>
-    
-    <footer>
-      © 2023 Xo game zone | Game On! 🕹️
-    </footer>
+  <div class="main-container">
+    <h1 class="game-title">XO Game Zone</h1>
+    <button class="launch-button" onclick="location.href='second.html'">
+      🚀 ጨዋታውን ጀምር
+    </button>
   </div>
 
-  <div class="user-id-display" id="userIdDisplay">
-    User ID: loading...
-  </div>
+  <div class="user-id-display" id="userIdDisplay"></div>
 
   <script>
-    // Generate or get user ID
-    let userId = localStorage.getItem('userId');
-    if (!userId) {
-      userId = 'user_' + Math.random().toString(36).substr(2, 9);
-      localStorage.setItem('userId', userId);
-    }
-    
-    // Initialize balance system
-    if (!localStorage.getItem('userBalances')) {
-      localStorage.setItem('userBalances', JSON.stringify({}));
-    }
-    
-    const userBalances = JSON.parse(localStorage.getItem('userBalances'));
-    if (typeof userBalances[userId] === 'undefined') {
-      userBalances[userId] = 0; // Start with 0 balance
-      localStorage.setItem('userBalances', JSON.stringify(userBalances));
-    }
-    
-    // Update displays
+    // User System
+    let userId = localStorage.getItem('userId') || `user_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem('userId', userId);
+
+    // Balance System
+    let userBalances = JSON.parse(localStorage.getItem('userBalances')) || {};
+    userBalances[userId] = userBalances[userId] || 0;
+    localStorage.setItem('userBalances', JSON.stringify(userBalances));
+
+    // Update Display
     document.getElementById('balanceValue').textContent = userBalances[userId];
     document.getElementById('userIdDisplay').textContent = `User ID: ${userId}`;
     
-    // Show contact info if balance is 0
-    if (userBalances[userId] <= 0) {
-      alert("Your balance is 0 BIRR. Contact admin with your ID to add funds.\nYour ID: " + userId);
+    if(userBalances[userId] <= 0) {
+      alert("የብር ሒሳብዎ ዜሮ ነው!\nበመጀመሪ deposit ያርጉ።\nየተጠቃሚ መታወቂያ: " + userId);
     }
   </script>
 </body>
-  </html>
+</html>
