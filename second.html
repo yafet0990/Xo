@@ -3,193 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xo Game Zone - Games</title>
+  <title>Game Selection</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
     
     body {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      color: #fff;
       font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #0a0a1a);
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .selection-container {
       max-width: 800px;
       margin: 0 auto;
-      padding: 40px 20px;
-      line-height: 1.6;
     }
-    
-    .balance-display {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
-      padding: 12px 25px;
-      border-radius: 30px;
-      box-shadow: 0 0 20px rgba(255, 107, 107, 0.4);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 1000;
-    }
-    
-    h1 {
+
+    .page-title {
       text-align: center;
-      color: #ff69b4;
-      margin-bottom: 40px;
-      font-size: 2.8rem;
-      text-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
-      position: relative;
-      padding-bottom: 15px;
+      font-size: 2.5rem;
+      background: linear-gradient(45deg, #ff3d9e, #00f7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 3rem;
     }
-    
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 120px;
-      height: 4px;
-      background: linear-gradient(90deg, #ff69b4, #ff416c);
-      border-radius: 3px;
-    }
-    
+
     .game-list {
       list-style: none;
       padding: 0;
     }
-    
+
     .game-item {
-      margin-bottom: 20px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid #00f7ff;
       border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(255, 105, 180, 0.2);
+      margin-bottom: 1.5rem;
       transition: all 0.3s ease;
-      overflow: hidden;
-      border-left: 5px solid #ff69b4;
+      box-shadow: 0 0 25px rgba(0, 247, 255, 0.1);
     }
-    
+
     .game-item:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
-      border-left: 5px solid #ff416c;
+      box-shadow: 0 0 35px rgba(0, 247, 255, 0.3);
     }
-    
+
     .game-link {
+      padding: 1.5rem;
+      display: block;
       text-decoration: none;
       color: inherit;
-      display: block;
-      padding: 25px 30px;
     }
-    
-    .game-title {
-      font-size: 1.4rem;
-      margin-bottom: 8px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-    }
-    
-    .game-title::before {
-      content: '🎮';
-      margin-right: 15px;
-      filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.6));
-    }
-    
-    .game-status {
-      font-size: 1rem;
-      padding-left: 35px;
-    }
-    
-    .available {
-      color: #7eff7e;
-    }
-    
-    .coming-soon {
-      color: #ffd479;
-    }
-    
-    .brand {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #ff69b4;
-      font-size: 1.4rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-shadow: 0 0 10px rgba(255, 105, 180, 0.6);
-    }
-    
+
     .game-number {
-      color: #ff69b4;
-      font-weight: 700;
-      margin-right: 10px;
+      font-size: 1.2rem;
+      color: #ff3d9e;
+      margin-right: 1rem;
     }
-    
-    .user-id-display {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(0,0,0,0.5);
-      padding: 8px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
+
+    .game-status {
+      color: #00f7ff;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <div class="balance-display">
-    <span class="balance-icon">🤖</span>
-    <span class="balance-amount" id="balanceDisplay">Balance: 0 BIRR</span>
-  </div>
-
-  <div class="brand">XO GAME ZONE</div>
-  <h1>Game Library</h1>
-  
-  <ul class="game-list">
-    <li class="game-item">
-      <a href="three.html" class="game-link">
-        <div class="game-title">
-          <span class="game-number">1</span> OX Game Challenge
-        </div>
-        <div class="game-status available">Available Now - Click to Play</div>
-      </a>
-    </li>
-    <li class="game-item">
-      <div class="game-link">
-        <div class="game-title">
-          <span class="game-number">2</span> Mystery Game
-        </div>
-        <div class="game-status coming-soon">Coming Soon - Stay Tuned!</div>
-      </div>
-    </li>
-  </ul>
-
-  <div class="user-id-display" id="userIdDisplay">
-    User ID: loading...
+  <div class="selection-container">
+    <h1 class="page-title">የጨዋታ ይምረጡ</h1>
+    
+    <ul class="game-list">
+      <li class="game-item">
+        <a href="three.html" class="game-link">
+          <div>
+            <span class="game-number">1</span>
+            <span>OX game</span>
+          </div>
+          <div class="game-status">አሁን ይጫወቱ</div>
+        </a>
+      </li>
+    </ul>
   </div>
 
   <script>
-    // Get user ID
-    const userId = localStorage.getItem('userId') || 'user_unknown';
+    // Initialize Balance Display
+    const userId = localStorage.getItem('userId');
+    const balances = JSON.parse(localStorage.getItem('userBalances')) || {};
+    document.getElementById('balanceDisplay').textContent = balances[userId] || 0;
     
-    // Initialize balance display
-    if (!localStorage.getItem('userBalances')) {
-      localStorage.setItem('userBalances', JSON.stringify({}));
-    }
-    
-    const userBalances = JSON.parse(localStorage.getItem('userBalances'));
-    if (typeof userBalances[userId] === 'undefined') {
-      userBalances[userId] = 0;
-      localStorage.setItem('userBalances', JSON.stringify(userBalances));
-    }
-    
-    // Update displays
-    document.getElementById('balanceDisplay').textContent = `Balance: ${userBalances[userId]} BIRR`;
-    document.getElementById('userIdDisplay').textContent = `User ID: ${userId}`;
-    
-    // Show alert if balance is 0
-    if (userBalances[userId] <= 0) {
-      alert("Your balance is 0 BIRR. Please contact admin to add funds.");
+    if(balances[userId] <= 0) {
+      alert("የብር ሒሳብዎ ዜሮ ነው! እባክዎ depost ያግኙ።");
     }
   </script>
 </body>
-      </html>
+</html>
