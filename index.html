@@ -102,9 +102,30 @@
   </style>
 </head>
 <body>
-
-  <!-- Add this at the end of the <body> -->
 <script>
+  <!-- Add this RIGHT AFTER THE EXISTING SCRIPT TAG -->
+<script>
+// Add this real-time balance update system
+window.addEventListener('storage', function(e) {
+    // Update balance when storage changes
+    const newBalances = JSON.parse(localStorage.getItem('userBalances'));
+    document.getElementById('balanceValue').textContent = newBalances[userId];
+    
+    // Update Telegram balances if needed
+    if(userId.startsWith('telegram_')) {
+        const tgBalances = JSON.parse(localStorage.getItem('tgBalances'));
+        document.getElementById('balanceValue').textContent = tgBalances[userId.split('_')[1]];
+    }
+});
+
+// Add user ID copy functionality
+document.getElementById('userIdDisplay').style.cursor = 'pointer';
+document.getElementById('userIdDisplay').title = 'Click to copy ID';
+document.getElementById('userIdDisplay').addEventListener('click', function() {
+    navigator.clipboard.writeText(userId);
+    alert('User ID copied to clipboard!');
+});
+</script>
 // Telegram Balance Sync System
 const urlParams = new URLSearchParams(window.location.search);
 
