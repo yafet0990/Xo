@@ -125,35 +125,7 @@ document.getElementById('userIdDisplay').addEventListener('click', function() {
     navigator.clipboard.writeText(userId);
     alert('User ID copied to clipboard!');
 });
-</script>
-// Telegram Balance Sync System
-const urlParams = new URLSearchParams(window.location.search);
-
-// 1. Get Telegram ID from bot's URL
-const tgId = urlParams.get('tgid');
-
-// 2. Create special balance storage for Telegram users
-if(tgId) {
-    // Merge Telegram balance with existing storage
-    const tgBalances = JSON.parse(localStorage.getItem('tgBalances')) || {};
-    
-    // Use Telegram ID as main user ID
-    userId = `telegram_${tgId}`;
-    
-    // Initialize balance if doesn't exist
-    if(!tgBalances[tgId]) {
-        tgBalances[tgId] = userBalances[userId] || 0;
-    }
-    
-    // Sync balances
-    userBalances[userId] = tgBalances[tgId];
-    localStorage.setItem('userBalances', JSON.stringify(userBalances));
-    localStorage.setItem('tgBalances', JSON.stringify(tgBalances));
-}
-
-// 3. Update display
-document.getElementById('balanceValue').textContent = userBalances[userId];
-</script>
+www
   <div class="nebula-effect"></div>
   
   <div class="balance-display">
